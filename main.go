@@ -32,9 +32,9 @@ func get_page(link string) string {
 		os.Exit(-1)
 	}
 	//fmt.Printf("client: status code: %d\n")
-	if resp.StatusCode == 200 {
-		fmt.Printf("url: %s \n", resp.Request.URL.String())
-	}
+	// if resp.StatusCode == 200 {
+	// 	fmt.Printf("url: %s \n", resp.Request.URL.String())
+	// }
 	return buf.String()
 }
 
@@ -64,8 +64,8 @@ func alert_sound() {
 }
 
 func remove_false_changes(web_page string) string {
-	//black_list_strings := []string{"weather", "azan", "views_count",""}
-	black_list_strings := []string{"typography_", "_StyledDynamicTypographyComponent"}
+	black_list_strings := []string{"weather", "azan", "views_count", "btn3-style-gradient", "timetoday", "data-lightbox", "su-image-carousel", "wp-aparat", "", "typography_", "_StyledDynamicTypographyComponent"}
+	//black_list_strings := []string{"typography_", "_StyledDynamicTypographyComponent"}
 	splitted_string := strings.Split(web_page, "\n")
 	for i := 0; i < len(splitted_string); i++ {
 		for j := 0; j < len(black_list_strings); j++ {
@@ -80,32 +80,38 @@ func remove_false_changes(web_page string) string {
 	return strings.Join(splitted_string, "\n")
 }
 
-func main() {
-
+func checker(domain string) {
 	old_hash := ""
-	link := "https://zoomit.ir/"
-	page := get_page(link)
+	page := get_page(domain)
 	cleaned_string := remove_false_changes(page)
 	hasher := sha256.New()
 	hasher.Write([]byte(cleaned_string))
 	initial_hash := hasher.Sum(nil)
 	old_hash = hex.EncodeToString(initial_hash)
+	// fmt.Printf("%s %s \n\n\n", domain, cleaned_string)
 	for {
 		hasher := sha256.New()
-		page := get_page(link)
+		page := get_page(domain)
 		cleaned_string := remove_false_changes(page)
 		hasher.Write([]byte(cleaned_string))
 		new_hash := hasher.Sum(nil)
-		if old_hash != hex.EncodeToString(new_hash) {
+		new_hash_string := hex.EncodeToString(new_hash)
+		if old_hash != new_hash_string {
+			fmt.Printf("[alert] %s domain changed [alert]\n", domain)
+			fmt.Printf("domain: %s  old = %s , new= %s \n", domain, old_hash, new_hash_string)
+			// fmt.Printf("%s %s \n\n\n", domain, cleaned_string)
 			alert_sound()
+
 		}
+		fmt.Printf("[+] %s domain analyzed \n", domain)
 		old_hash = hex.EncodeToString(new_hash)
-		fmt.Printf("%s\n", old_hash)
-
-		time.Sleep(3 * time.Second)
-
+		// fmt.Printf("domain: %s hash: %s\n", domain, old_hash)
+		time.Sleep(60 * time.Second)
 	}
+}
 
-	//final = resp.Request.URL.String()
-	//return final, resp.StatusCode, buf, nil
+func main() {
+
+	go checker("google.com")
+	select {}
 }
