@@ -17,11 +17,14 @@ import (
 	"github.com/faiface/beep/speaker"
 )
 
+<<<<<<< HEAD
 const ErrorColor = "\033[1;31m"
 const InfoColor = "\033[1;34m"
 const WarningColor = "\033[1;33m"
 const colorNone = "\033[0m"
 
+=======
+>>>>>>> ec7235a25feee60f9468173a5c872f79c47ca6db
 func get_page(link string) (int, string) {
 	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	resp, err := http.Get(link)
@@ -41,8 +44,13 @@ func get_page(link string) (int, string) {
 }
 
 func alert_sound() {
+<<<<<<< HEAD
 	// count := 0
 	// for count < 1 {
+=======
+	count := 0
+	for count < 1 {
+>>>>>>> ec7235a25feee60f9468173a5c872f79c47ca6db
 
 	f, err := os.Open("./peru-alert.mp3")
 	if err != nil {
@@ -67,7 +75,12 @@ func alert_sound() {
 }
 
 func remove_false_changes(web_page string) string {
+<<<<<<< HEAD
 	black_list_strings := []string{"weather", "azan", "views_count", "btn3-style-gradient", "timetoday", "data-lightbox", "su-image-carousel", "wp-aparat", "theme_token", "time", "form-actions form-wrapper", "view-dom-id-", "_blank", "data-nid", "geohack", "captcha", "\"__VIEWSTATE\" id=\"__VIEWSTATE\"", "__EVENTVALIDATION", "dnngo_gomenu", "dnngo_megamenue", "__RequestVerificationToken", "dnngo_megamenu", "csrf", "contact__item", "count", "token", "w-100 px-3 mb-0", "w-100 text-xs", "glide__container border-0", "nav-link text-light", "nav-link", "glide__slide", "move-on-hover", "ctl09_MenuView1", "ctl96_lblSiteHit", "ctl96_lblPage", "آمار بازدید", "آخرین بروز رسانی", "text-color", "product-item", "product-type-simple", "article class=\"post-item\"", "statistics-value", "block-content clear", "views-field views-field-field-image", "views-field views-field-title", "Challenge", "\"sid\" type=\"hidden\"", "OnlineUserCount", "BDC_CaptchaImageDiv", "BDC_SoundLink", "BotDetectCaptcha", "BDC_VCID_LoginCaptcha", "BDC_Hs_LoginCaptcha", "CaptchaImage.axd", "link rel='stylesheet'", "initResponsivePagination", "row vc_row wpb_row vc_row-fluid", "row vc_row vc_inner", "btn-bs-pagination next", "better-slider", "bsb-have-heading-color", "wpb_column", "bs-shortcode", "bs-slider-controls", ".bs-pretty-tabs-container", "digits_login_remember", "digits_reg_lastname", "login-field", "lostpasswordform", "remember-checkbox", "news-mul-content", "fa fa-angle-left font-13", "latest_posts-details-category", "form-control-static", "ctl00_rssmStyleSheet_TSSM", "TSM_CombinedScripts", "ctl00_cphMiddleTabs_Sampa", "ctl01_ctl09_Title", "wd-info-box"}
+=======
+	black_list_strings := []string{"weather", "azan", "views_count", "btn3-style-gradient", "timetoday", "data-lightbox", "su-image-carousel", "wp-aparat", "theme_token", "time", "form-actions form-wrapper", "view-dom-id-", "_blank", "data-nid"}
+	//black_list_strings := []string{"typography_", "_StyledDynamicTypographyComponent"}
+>>>>>>> ec7235a25feee60f9468173a5c872f79c47ca6db
 	splitted_string := strings.Split(web_page, "\n")
 	for i := 0; i < len(splitted_string); i++ {
 		for j := 0; j < len(black_list_strings); j++ {
@@ -87,17 +100,25 @@ func remove_false_changes(web_page string) string {
 }
 
 func checker(domain string) {
+<<<<<<< HEAD
 	//counter := 0
+=======
+>>>>>>> ec7235a25feee60f9468173a5c872f79c47ca6db
 	dt := time.Now()
 	old_hash := ""
 	status_code, page := get_page(domain)
 	for status_code == -1 {
 		status_code, page = get_page(domain)
+<<<<<<< HEAD
 		time.Sleep(30 * time.Second)
+=======
+		time.Sleep(5 * time.Second)
+>>>>>>> ec7235a25feee60f9468173a5c872f79c47ca6db
 	}
 
 	cleaned_string := remove_false_changes(page)
 	for status_code != 200 {
+<<<<<<< HEAD
 		if status_code >= 500 {
 			fmt.Fprintf(os.Stdout, "%s [alert] %s domain -> %s  , status_code: %d \n%s", ErrorColor, dt.String(), domain, status_code, colorNone)
 		} else {
@@ -107,6 +128,11 @@ func checker(domain string) {
 		time.Sleep(30 * time.Second)
 		status_code, page = get_page(domain)
 		dt = time.Now()
+=======
+		fmt.Printf("[alert] %s domain -> %s  , status_code: %d \n", dt.String(), domain, status_code)
+		alert_sound()
+		time.Sleep(3 * time.Second)
+>>>>>>> ec7235a25feee60f9468173a5c872f79c47ca6db
 	}
 	hasher := sha256.New()
 	hasher.Write([]byte(cleaned_string))
@@ -118,6 +144,7 @@ func checker(domain string) {
 		status_code, page = get_page(domain)
 		for status_code == -1 {
 			status_code, page = get_page(domain)
+<<<<<<< HEAD
 			time.Sleep(30 * time.Second)
 		}
 		for status_code != 200 {
@@ -131,6 +158,14 @@ func checker(domain string) {
 			time.Sleep(30 * time.Second)
 			status_code, page = get_page(domain)
 			dt = time.Now()
+=======
+			time.Sleep(5 * time.Second)
+		}
+		for status_code != 200 {
+			fmt.Printf("[alert] %s domain -> %s  , status_code: %d \n", dt.String(), domain, status_code)
+			alert_sound()
+			time.Sleep(5 * time.Second)
+>>>>>>> ec7235a25feee60f9468173a5c872f79c47ca6db
 		}
 		cleaned_string = remove_false_changes(page)
 		hasher.Write([]byte(cleaned_string))
@@ -138,8 +173,12 @@ func checker(domain string) {
 		new_hash_string := hex.EncodeToString(new_hash)
 		if old_hash != new_hash_string {
 			dt = time.Now()
+<<<<<<< HEAD
 			fmt.Fprintf(os.Stdout, "%s [alert] %s  domain ->  %s changed  status_code: %d [alert]\n%s", ErrorColor, dt.String(), domain, status_code, colorNone)
 
+=======
+			fmt.Printf("[alert] %s  domain ->  %s changed  status_code: %d [alert]\n", dt.String(), domain, status_code)
+>>>>>>> ec7235a25feee60f9468173a5c872f79c47ca6db
 			// fmt.Printf("%s %s \n\n\n", domain, cleaned_string) // debug change detection
 			alert_sound()
 
@@ -153,7 +192,11 @@ func checker(domain string) {
 			dt = time.Now()
 			fmt.Printf("[alert] %s  domain ->  %s hack keyword detected: %s  status_code: %d [alert]\n", dt.String(), domain, "هک", status_code)
 			alert_sound()
+<<<<<<< HEAD
 		} else if strings.Contains(lowercase_page, "مرگ بر") {
+=======
+		} else if strings.Contains(lowercase_page, "مرگ") {
+>>>>>>> ec7235a25feee60f9468173a5c872f79c47ca6db
 			dt = time.Now()
 			fmt.Printf("[alert] %s  domain ->  %s hack keyword detected: %s  status_code: %d [alert]\n", dt.String(), domain, "مرگ", status_code)
 			alert_sound()
@@ -164,7 +207,11 @@ func checker(domain string) {
 		}
 
 		dt = time.Now()
+<<<<<<< HEAD
 		// fmt.Printf("[+] %s  domain -> %s analyzed status_code: %d \n", dt.String(), domain, status_code)
+=======
+		fmt.Printf("[+] %s  domain -> %s analyzed \n", dt.String(), domain)
+>>>>>>> ec7235a25feee60f9468173a5c872f79c47ca6db
 		old_hash = hex.EncodeToString(new_hash)
 		// fmt.Printf("domain: %s hash: %s\n", domain, old_hash)
 		time.Sleep(5 * time.Second)
@@ -173,5 +220,9 @@ func checker(domain string) {
 
 func main() {
 
+<<<<<<< HEAD
+=======
+	go checker("https://google.ir/")
+>>>>>>> ec7235a25feee60f9468173a5c872f79c47ca6db
 	select {}
 }
